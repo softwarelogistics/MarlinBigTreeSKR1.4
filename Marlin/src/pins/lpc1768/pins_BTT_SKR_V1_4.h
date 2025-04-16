@@ -56,7 +56,7 @@
 //
 // Servos
 //
-#define SERVO0_PIN                         P2_00
+#define SERVO0_PIN                         -1
 
 //
 // TMC StallGuard DIAG pins

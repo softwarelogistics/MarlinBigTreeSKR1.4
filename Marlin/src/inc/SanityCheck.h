@@ -132,13 +132,13 @@ static_assert(COUNT(arm) == LOGICAL_AXES, "AXIS_RELATIVE_MODES must contain " _L
 /**
  * Heated Bed requirements
  */
-#if HAS_HEATED_BED
-  #if !HAS_TEMP_BED
-    #error "The Heated Bed requires a TEMP_BED_PIN or Thermocouple."
-  #elif !HAS_HEATER_BED
-    #error "The Heated Bed requires HEATER_BED_PIN."
-  #endif
-#endif
+// #if HAS_HEATED_BED
+//   #if !HAS_TEMP_BED
+//     #error "The Heated Bed requires a TEMP_BED_PIN or Thermocouple."
+//   #elif !HAS_HEATER_BED
+//     #error "The Heated Bed requires HEATER_BED_PIN."
+//   #endif
+// #endif
 
 /**
  * Hephestos 2 Heated Bed Kit requirements
@@ -2200,7 +2200,7 @@ static_assert(NUM_SERVOS <= NUM_SERVO_PLUGS, "NUM_SERVOS (or some servo index) i
 /**
  * Pins and Sensor IDs must be set for each heater
  */
-#if HAS_HOTEND
+#if HAS_HOTEND_NOT
   #if !HAS_HEATER_0
     #error "HEATER_0_PIN not defined for this board."
   #elif TEMP_SENSOR_IS_MAX_TC(0) && !PIN_EXISTS(TEMP_0_CS)

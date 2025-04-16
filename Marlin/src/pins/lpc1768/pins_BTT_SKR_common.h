@@ -86,11 +86,16 @@
   //#define TEMP_1_SCK_PIN  P...
 #endif
 
+#define FAN0_PIN P2_05
+#define FAN1_PIN P2_07
+#define FAN2_PIN P2_04
+#define FAN3_PIN P2_03
+
 //
 // Heaters / Fans
 //
 #ifndef HEATER_0_PIN
-  #define HEATER_0_PIN                     P2_07
+  #define HEATER_0_PIN                     -1
 #endif
 #if HOTENDS == 1 && DISABLED(HEATERS_PARALLEL)
   #ifndef FAN1_PIN
@@ -105,8 +110,10 @@
   #define FAN0_PIN                         P2_03
 #endif
 #ifndef HEATER_BED_PIN
-  #define HEATER_BED_PIN                   P2_05
+  #define HEATER_BED_PIN                   -1
 #endif
+
+
 
 //
 // LCD / Controller

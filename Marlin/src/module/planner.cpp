@@ -1180,15 +1180,58 @@ void Planner::recalculate(const_float_t safe_exit_speed_sqr) {
     #if ENABLED(FAN_SOFT_PWM)
       #define _FAN_SET(F) thermalManager.soft_pwm_amount_fan[F] = CALC_FAN_SPEED(fan_speed[F]);
     #else
-      #define _FAN_SET(F) hal.set_pwm_duty(pin_t(FAN##F##_PIN), CALC_FAN_SPEED(fan_speed[F]));
+      //#define _FAN_SET(F)  (fan_speed[F] < 100) ? hal.set_pwm_duty(pin_t(FAN##F##_PIN), CALC_FAN_SPEED(fan_speed[F])) : digitalWrite(pin_t(FAN##F##_PIN), 255);
+      #define _FAN_SET(F)  (fan_speed[F] < 255) ?  WRITE(pin_t(FAN##F##_PIN), LOW) : WRITE(pin_t(FAN##F##_PIN), HIGH);
     #endif
     #define FAN_SET(F) do{ kickstart_fan(fan_speed, ms, F); _FAN_SET(F); }while(0)
 
+
+
     const millis_t ms = millis();
+
+    // if(fan_speed[0] == 0) {
+    //   WRITE(FAN0_PIN, LOW);
+    //   SERIAL_ECHO_MSG("FAN 0 OFF");
+    // }
+    // else {
+    //   WRITE(FAN0_PIN, HIGH);
+    //   SERIAL_ECHO_MSG("FAN 0 ON");
+    // }
+
+    // if(fan_speed[1] == 0) {
+    //   SERIAL_ECHO_MSG("FAN 1 OFF");
+    //   WRITE(pin_t(FAN1_PIN), LOW);
+    // }
+    // else {
+    //   SERIAL_ECHO_MSG("FAN 1 ON");
+    //   WRITE(pin_t(FAN1_PIN), HIGH);
+    // }
+
+    // if(fan_speed[2] == 0) {
+    //   SERIAL_ECHO_MSG("FAN 2 OFF");
+    //   WRITE(pin_t(FAN2_PIN), LOW);
+    // }
+    // else {
+    //   SERIAL_ECHO_MSG("FAN 2 ON");
+    //   WRITE(pin_t(FAN2_PIN), HIGH);
+    // }
+
+    // if(fan_speed[3] == 0) {
+    //   SERIAL_ECHO_MSG("FAN 3 OFF");
+    //   WRITE(pin_t(FAN3_PIN), LOW);
+    // }
+    // else {
+    //   SERIAL_ECHO_MSG("FAN 3 ON");
+    //   WRITE(pin_t(FAN3_PIN), HIGH);
+    // }
+
+
+    // this is where we set fan speed.
     TERN_(HAS_FAN0, FAN_SET(0)); TERN_(HAS_FAN1, FAN_SET(1));
     TERN_(HAS_FAN2, FAN_SET(2)); TERN_(HAS_FAN3, FAN_SET(3));
     TERN_(HAS_FAN4, FAN_SET(4)); TERN_(HAS_FAN5, FAN_SET(5));
     TERN_(HAS_FAN6, FAN_SET(6)); TERN_(HAS_FAN7, FAN_SET(7));
+    SERIAL_ECHO_MSG("FAN SET: ", fan_speed[0], " ", fan_speed[1], " ", fan_speed[2], " ", fan_speed[3]);
   }
 
   #if FAN_KICKSTART_TIME
