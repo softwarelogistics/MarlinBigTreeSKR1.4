@@ -586,6 +586,8 @@
   #define BOARD_NEOPIXEL_PIN               P1_24
 #endif
 
+#define NEOPIXEL2_PIN P2_00
+
 /**
  * Special pins
  *   P1_30  (37) (NOT 5V tolerant)
