@@ -417,6 +417,45 @@ void GcodeSuite::G28() {
           homeaxis(Y_AXIS);
       #endif
 
+      #if HAS_Z_AXIS
+
+      // Home Z last if homing towards the bed
+      #if DISABLED(HOME_Z_FIRST)
+        if (doZ) {
+          #if ANY(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
+            stepper.set_all_z_lock(false);
+            stepper.set_separate_multi_axis(false);
+          #endif
+
+          #if ENABLED(Z_SAFE_HOMING)
+            // H means hold the current X/Y position when probing.
+            // Otherwise move to the define safe X/Y position before homing Z.
+            if (!parser.seen_test('H'))
+              home_z_safely();
+            else
+              homeaxis(Z_AXIS);
+          #else
+            homeaxis(Z_AXIS);
+          #endif
+
+          #if ANY(Z_HOME_TO_MIN, ALLOW_Z_AFTER_HOMING)
+            finalRaiseZ = true;
+          #endif
+        }
+      #endif
+
+      SECONDARY_AXIS_CODE(
+        if (doI) homeaxis(I_AXIS),
+        if (doJ) homeaxis(J_AXIS),
+        if (doK) homeaxis(K_AXIS),
+        if (doU) homeaxis(U_AXIS),
+        if (doV) homeaxis(V_AXIS),
+        if (doW) homeaxis(W_AXIS)
+      );
+
+    #endif // HAS_Z_AXIS
+
+
       // Home X
       #if HAS_X_AXIS
         if (doX || (doY && ENABLED(CODEPENDENT_XY_HOMING) && DISABLED(HOME_Y_BEFORE_X))) {
@@ -462,49 +501,8 @@ void GcodeSuite::G28() {
 
       TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(saved_motion_state));
 
-      #if ENABLED(FOAMCUTTER_XYUV)
-
-        // Skip homing of unused Z axis for foamcutters
-        if (doZ) set_axis_is_at_home(Z_AXIS);
-
-      #elif HAS_Z_AXIS
-
-        // Home Z last if homing towards the bed
-        #if DISABLED(HOME_Z_FIRST)
-          if (doZ) {
-            #if ANY(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
-              stepper.set_all_z_lock(false);
-              stepper.set_separate_multi_axis(false);
-            #endif
-
-            #if ENABLED(Z_SAFE_HOMING)
-              // H means hold the current X/Y position when probing.
-              // Otherwise move to the define safe X/Y position before homing Z.
-              if (!parser.seen_test('H'))
-                home_z_safely();
-              else
-                homeaxis(Z_AXIS);
-            #else
-              homeaxis(Z_AXIS);
-            #endif
-
-            #if ANY(Z_HOME_TO_MIN, ALLOW_Z_AFTER_HOMING)
-              finalRaiseZ = true;
-            #endif
-          }
-        #endif
-
-        SECONDARY_AXIS_CODE(
-          if (doI) homeaxis(I_AXIS),
-          if (doJ) homeaxis(J_AXIS),
-          if (doK) homeaxis(K_AXIS),
-          if (doU) homeaxis(U_AXIS),
-          if (doV) homeaxis(V_AXIS),
-          if (doW) homeaxis(W_AXIS)
-        );
-
-      #endif // HAS_Z_AXIS
-
+      
+    
       sync_plan_position();
 
     #endif
