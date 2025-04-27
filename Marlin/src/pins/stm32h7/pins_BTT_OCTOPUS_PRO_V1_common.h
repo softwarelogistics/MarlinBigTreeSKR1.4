@@ -242,10 +242,11 @@
 #define HEATER_1_PIN                        PA3   // Heater1
 #define HEATER_3_PIN                        PB11  // Heater3
 
-#define FAN0_PIN                            PA0   // Fan0
-#define FAN1_PIN                            PA3   // Fan1
-#define FAN2_PIN                            PB0 // Fan2
-#define FAN3_PIN                            PB11  // Fan3
+// Attached to heater pins for vacuum and solenoid control
+#define FAN0_PIN                            PA0   // Heater 1
+#define FAN1_PIN                            PA3   // Heater 2
+#define FAN2_PIN                            PB0   // Heater 3
+#define FAN3_PIN                            PB11  // Heater 4
 #define FAN4_PIN                            PD14  // Fan4
 #define FAN5_PIN                            PD15  // Fan5
 
