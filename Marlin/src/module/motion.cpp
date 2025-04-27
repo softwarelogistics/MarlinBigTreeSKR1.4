@@ -204,11 +204,14 @@ inline void report_more_positions() {
   TERN_(POLAR, polar_report_positions());
 }
 
+#define SP_I_LBL PSTR(" A:")
+#define SP_J_LBL PSTR(" B:")
+
 // Report the logical position for a given machine position
 inline void report_logical_position(const xyze_pos_t &rpos) {
   const xyze_pos_t lpos = rpos.asLogical();
   #if NUM_AXES
-    SERIAL_ECHOPGM_P(
+    SERIAL_ECHOLNPGM_P(
       LIST_N(DOUBLE(NUM_AXES),
            X_LBL, lpos.x,
         SP_Y_LBL, lpos.y,
@@ -221,9 +224,11 @@ inline void report_logical_position(const xyze_pos_t &rpos) {
         SP_W_LBL, lpos.w
       )
     );
+
+
   #endif
   #if HAS_EXTRUDERS
-    SERIAL_ECHOPGM_P(SP_E_LBL, lpos.e);
+ //   SERIAL_ECHOPGM_P(SP_E_LBL, lpos.e);
   #endif
 }
 
@@ -258,7 +263,7 @@ void report_current_position() {
  */
 void report_current_position_projected() {
   report_logical_position(current_position);
-  stepper.report_a_position(planner.position);
+  //stepper.report_a_position(planner.position);
 }
 
 #if HAS_HOMING_CURRENT
@@ -272,7 +277,7 @@ void report_current_position_projected() {
   #endif
 
   #if HAS_CURRENT_HOME(X)
-    int16_t saved_current_X;
+    int16_t saved_current_XF31;
   #endif
   #if HAS_CURRENT_HOME(Y)
     int16_t saved_current_Y;
