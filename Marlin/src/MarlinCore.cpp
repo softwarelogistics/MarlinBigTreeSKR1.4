@@ -1192,7 +1192,7 @@ void setup() {
   #endif
   SERIAL_ECHOLNPGM("start");
 
-  // Set up these pins early to prevent suicide
+  //Set up these pins early to prevent suicide
   #if HAS_KILL
     SETUP_LOG("KILL_PIN");
     #if KILL_PIN_STATE
@@ -1729,6 +1729,5 @@ void loop() {
     TERN_(HAS_TFT_LVGL_UI, printer_state_polling());
 
     TERN_(MARLIN_TEST_BUILD, runPeriodicTests());
-
   } while (ENABLED(__AVR__)); // Loop forever on slower (AVR) boards
 }
