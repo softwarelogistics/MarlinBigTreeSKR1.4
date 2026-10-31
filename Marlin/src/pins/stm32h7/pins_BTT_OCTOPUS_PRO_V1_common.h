@@ -528,7 +528,7 @@
   /**
    *                      -------
    *            GND | 9  |       | 8 | 3.3V
-   *  (ESP-CS) PB12 | 10 |       | 7 | PB15 (ESP-MOSI)
+   *  (ESP-CS) P2 | 10 |       | 7 | PB15 (ESP-MOSI)
    *           3.3V | 11 |       | 6 | PB14 (ESP-MISO)
    * (ESP-IO0)  PD7 | 12 |       | 5 | PB13 (ESP-CLK)
    * (ESP-IO4) PD10 | 13 |       | 4 | --

@@ -37,6 +37,7 @@
  */
 #define CONFIGURATION_H_VERSION 02010300
 
+
 //===========================================================================
 //============================= Getting Started =============================
 //===========================================================================
@@ -1335,7 +1336,7 @@ Also in the file
  * Override with M92 (when enabled below)
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 500, 500}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 40, 8.8, 8.8}
 
 /**
  * Enable support for M92. Disable to save at least ~530 bytes of flash.
@@ -1347,7 +1348,7 @@ Also in the file
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 1000, 100, 100 }
+#define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1360,7 +1361,7 @@ Also in the file
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 300, 3000,3000 }
+#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 3000, 3000,3000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1852,10 +1853,10 @@ Also in the file
 // @section motion
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR false
-#define INVERT_Y_DIR false
-#define INVERT_Y2_DIR true
-#define INVERT_Z_DIR true
+#define INVERT_X_DIR true
+#define INVERT_Y_DIR true
+#define INVERT_Y2_DIR false
+#define INVERT_Z_DIR false
 #define INVERT_I_DIR false
 #define INVERT_J_DIR false
 //#define INVERT_K_DIR false
@@ -1887,7 +1888,7 @@ Also in the file
  */
 //#define Z_IDLE_HEIGHT Z_HOME_POS
 
-#define Z_CLEARANCE_FOR_HOMING  31.5   // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_CLEARANCE_FOR_HOMING  46   // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                       // You'll need this much clearance above Z_MAX_POS to avoid grinding.
 
 //#define Z_AFTER_HOMING         10   // (mm) Height to move to after homing (if Z was homed)
@@ -1926,7 +1927,7 @@ Also in the file
 
 // The size of the printable area
 #define X_BED_SIZE 330
-#define Y_BED_SIZE 350
+#define Y_BED_SIZE 380
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1934,7 +1935,7 @@ Also in the file
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 200
+#define Z_MAX_POS 250
 #define I_MIN_POS -360
 #define I_MAX_POS 360
 #define J_MIN_POS -360
@@ -2392,7 +2393,7 @@ Also in the file
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { 7500, 7500, 400, 300, 300 } // X, Y, Z, I, J, K, U, V, W
+#define HOMING_FEEDRATE_MM_M { 7500, 7500, 4000, 300, 300 } // X, Y, Z, I, J, K, U, V, W
 
 // Edit homing feedrates with M210 and MarlinUI menu items
 //#define EDITABLE_HOMING_FEEDRATE
@@ -3653,8 +3654,7 @@ Also in the file
 #if ANY(RGB_LED, RGBW_LED)
   //#define RGB_LED_R_PIN 34
   //#define RGB_LED_G_PIN 43
-  //#define RGB_LED_B_PIN 35
-  //#define RGB_LED_W_PIN -1
+  //#define RGB_LED_B_PIN 35 
 #endif
 
 #if ANY(RGB_LED, RGBW_LED, PCA9632)
@@ -3667,12 +3667,12 @@ Also in the file
 // Support for Adafruit NeoPixel LED driver
 #define NEOPIXEL_LED
 #if ENABLED(NEOPIXEL_LED)
-  #define NEOPIXEL_TYPE          NEO_GRB // NEO_GRBW, NEO_RGBW, NEO_GRB, NEO_RBG, etc.
+  #define NEOPIXEL_TYPE          NEO_BGR // NEO_GRBW, NEO_RGBW, NEO_GRB, NEO_RBG, etc.
                                           // See https://github.com/adafruit/Adafruit_NeoPixel/blob/master/Adafruit_NeoPixel.h
   //#define NEOPIXEL_PIN                4 // LED driving pin
-  #define NEOPIXEL2_TYPE         NEO_GRB
-  #define NEOPIXEL2_PIN               5
-  #define NEOPIXEL_PIXELS              16 // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
+  #define NEOPIXEL2_TYPE         NEO_BGR
+  #define NEOPIXEL2_PIN               PB6
+  #define NEOPIXEL_PIXELS              17 // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
   #define NEOPIXEL_IS_SEQUENTIAL          // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
   #define NEOPIXEL_BRIGHTNESS         127 // Initial brightness (0-255)
   //#define NEOPIXEL_STARTUP_TEST         // Cycle through colors at startup
@@ -3680,7 +3680,7 @@ Also in the file
   // Support for second Adafruit NeoPixel LED driver controlled with M150 S1 ...
   #define NEOPIXEL2_SEPARATE
   #if ENABLED(NEOPIXEL2_SEPARATE)
-    #define NEOPIXEL2_PIXELS           16 // Number of LEDs in the second strip
+    #define NEOPIXEL2_PIXELS           17 // Number of LEDs in the second strip
     #define NEOPIXEL2_BRIGHTNESS      127 // Initial brightness (0-255)
     #define NEOPIXEL2_STARTUP_TEST        // Cycle through colors at startup
     #define NEOPIXEL_M150_DEFAULT      -1 // Default strip for M150 without 'S'. Use -1 to set all by default.
