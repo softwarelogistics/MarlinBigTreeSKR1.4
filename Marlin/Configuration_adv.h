@@ -3534,7 +3534,12 @@
  * echo:i2c-reply: from:99 bytes:5 data:hello
  */
 
-//#define EXPERIMENTAL_I2CBUS
+// LumenPnP vacuum pressure monitors (XGZP6857D) are read by the
+// manufacturing UI using M260/M261 through the I2C multiplexer at address
+// 112 (0x70), with sensor address 109 (0x6D). Marlin's G-code handlers for
+// those commands are compiled only with EXPERIMENTAL_I2CBUS enabled.
+// Keep the controller an I2C master (I2C_SLAVE_ADDRESS = 0 below).
+#define EXPERIMENTAL_I2CBUS
 #if ENABLED(EXPERIMENTAL_I2CBUS)
   #define I2C_SLAVE_ADDRESS  0  // Set a value from 8 to 127 to act as a slave
 #endif
