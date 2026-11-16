@@ -177,7 +177,7 @@ extern Marlin_NeoPixel neo;
     static void set_brightness(const uint8_t b) { adaneo.setBrightness(b); }
     static void show() {
       adaneo.show();
-      adaneo.setPin(NEOPIXEL2_PIN);
+     // adaneo.setPin(NEOPIXEL2_PIN);
     }
 
     // Accessors

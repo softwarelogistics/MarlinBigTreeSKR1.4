@@ -154,7 +154,7 @@ void Marlin_NeoPixel::init() {
     #if ENABLED(NEOPIXEL2_STARTUP_TEST)
       set_color_startup(adaneo.Color(255, 0, 0, 0));  // red
       safe_delay(500);
-      set_color_startup(adaneo.Color(0, 255, 0, 0));  // green
+      set_color_startup(adaneo.Color(0, 128, 0, 0));  // green
       safe_delay(500);
       set_color_startup(adaneo.Color(0, 0, 255, 0));  // blue
       safe_delay(500);
@@ -164,11 +164,34 @@ void Marlin_NeoPixel::init() {
       #endif
     #endif
 
+    /*set_brightness(255);
+
+    set_color_startup(adaneo.Color(0, 64, 0));
+    safe_delay(750);
+
+    set_color_startup(adaneo.Color(0, 128, 0));
+    safe_delay(750);
+
+    set_color_startup(adaneo.Color(0, 192, 0));
+    safe_delay(750);
+
+    set_color_startup(adaneo.Color(0, 255, 0));
+    safe_delay(750);*/
+
+    set_color_startup(0);
+
+
+    safe_delay(100);
+    set_color_startup(0);
+
     set_color(adaneo.Color
       TERN(NEO2_USER_PRESET_STARTUP,
         (NEO2_USER_PRESET_RED, NEO2_USER_PRESET_GREEN, NEO2_USER_PRESET_BLUE, NEO2_USER_PRESET_WHITE),
         (0, 0, 0, 0))
     );
+  
+    //set_brightness(255);
+    set_color_startup(0);
   }
 
 #endif // NEOPIXEL2_SEPARATE
