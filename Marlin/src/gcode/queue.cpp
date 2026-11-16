@@ -37,6 +37,13 @@ GCodeQueue queue;
 #include "../MarlinCore.h"
 #include "../core/bug_on.h"
 
+#if ENABLED(PNP_VACUUM_BRIDGE)
+  #include "pnp_vacuum_bridge.h"
+  #if !defined(SERIAL_PORT_3) || SERIAL_PORT_3 != 3
+    #error "PNP_VACUUM_BRIDGE requires SERIAL_PORT_3 3 (USART3)"
+  #endif
+#endif
+
 #if ENABLED(BINARY_FILE_TRANSFER)
   #include "../feature/binary_stream.h"
 #endif
@@ -459,6 +466,16 @@ void GCodeQueue::get_serial_commands() {
       }
 
       const char serial_char = (char)c;
+
+      #if ENABLED(PNP_VACUUM_BRIDGE)
+        // Third configured Marlin serial leaf is UART3, index 2.
+        // Treat ESP32 frames as sensor telemetry, never as G-code.
+        if (p == 2) {
+          PnpVacuumBridge::consume(serial_char);
+          continue;
+        }
+      #endif
+
       SerialState &serial = serial_state[p];
 
       if (ISEOL(serial_char)) {

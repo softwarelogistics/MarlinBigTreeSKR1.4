@@ -147,6 +147,7 @@ Also in the file
 #define SERIAL_PORT 1
 #define SERIAL_PORT_2 -1
 #define SERIAL_PORT_3 3
+#define PNP_VACUUM_BRIDGE 1 // UART3 receives ESP32 raw pressure frames; M170 reports cached readings
 
 #define BAUDRATE 115200
 #define BAUDRATE_2 115200   // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE

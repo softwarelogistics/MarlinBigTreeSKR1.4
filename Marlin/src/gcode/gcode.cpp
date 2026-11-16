@@ -34,6 +34,10 @@ GcodeSuite gcode;
 
 #include "parser.h"
 #include "queue.h"
+
+#if ENABLED(PNP_VACUUM_BRIDGE)
+  #include "pnp_vacuum_bridge.h"
+#endif
 #include "../module/motion.h"
 
 #if ENABLED(PRINTCOUNTER)
@@ -702,6 +706,10 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
 
       #if HAS_COLOR_LEDS
         case 150: M150(); break;                                  // M150: Set Status LED Color
+      #endif
+
+      #if ENABLED(PNP_VACUUM_BRIDGE)
+        case 170: PnpVacuumBridge::report(); break; // M170: cached raw ESP32 vacuum readings
       #endif
 
       #if ENABLED(MIXING_EXTRUDER)
