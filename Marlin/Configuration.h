@@ -3053,7 +3053,7 @@ Also in the file
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER // Disabled: EXP1 PE7/PE8 assigned to Photon RS485 RE/DE
 
 //
 // K.3D Full Graphic Smart Controller
