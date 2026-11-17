@@ -42,3 +42,17 @@
 #ifndef NEOPIXEL_PIN
   #define NEOPIXEL_PIN                      PB10
 #endif
+
+//
+// Photon feeder RS485 (MAX485) on EXP1, only for Octopus Pro V1.1.
+// UART2 TX=PD5 and RX=PD6 are exposed separately on J26.
+// Keep /RE LOW so the packetizer can read back transmitted bytes;
+// toggle DE HIGH for transmit and LOW to listen.
+//
+#if defined(RS485_SERIAL_PORT)
+  #if HAS_WIRED_LCD || ENABLED(BTT_MOTOR_EXPANSION)
+    #error "RS485 uses EXP1 PE7/PE8; choose new enable pins before enabling an LCD or motor expansion."
+  #endif
+  #define RS485_RX_ENABLE_PIN               EXP1_02_PIN // PE7 -> MAX485 /RE (active LOW)
+  #define RS485_TX_ENABLE_PIN               EXP1_01_PIN // PE8 -> MAX485 DE  (active HIGH)
+#endif

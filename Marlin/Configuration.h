@@ -162,10 +162,13 @@ Also in the file
  * Select a serial port to communicate with RS485 protocol
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
  */
-//#define RS485_SERIAL_PORT 1
+// Photon feeder bus on the Octopus Pro V1.1 UART2 header (J26).
+// Keep UART3 dedicated to the ESP32 vacuum sensor bridge (M170).
+// This dedicated UART is not a G-code host serial port.
+#define RS485_SERIAL_PORT 2
 #ifdef RS485_SERIAL_PORT
-  //#define M485_PROTOCOL 1   // Check your host for protocol compatibility
-  //#define RS485_BUS_BUFFER_SIZE 128
+  #define M485_PROTOCOL 1       // Preserve the existing C# Photon response format
+  #define RS485_BUS_BUFFER_SIZE 128
 #endif
 
 // Enable the Bluetooth serial interface on AT90USB devices
