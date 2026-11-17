@@ -7,15 +7,15 @@ This enables the **existing** Marlin `M485` / Photon packetizer; it does not imp
 
 ## Dedicated pins
 
-| Octopus Pro V1.1 | Header | MAX485ESA breakout | Purpose |
+| Octopus Pro V1.1 | Header | MAX485ESA breakout | Purpose | Color
 | --- | --- | --- | --- |
-| PD5 / USART2_TX | UART2 J26 | DI | MCU transmit |
-| PD6 / USART2_RX | UART2 J26 | RO | MCU receive |
-| PE7 / EXP1 pin 2 | EXP1 | RE (active LOW) | Receiver held enabled |
-| PE8 / EXP1 pin 1 | EXP1 | DE (active HIGH) | Transmitter direction |
-| 5V | UART2 J26 | VCC | MAX485ESA is a **5V** transceiver |
-| GND | UART2 J26 | GND | Shared logic ground |
-| -- | -- | A / B | To feeder **RS485 A/B only** (verify feeder pinout) |
+| PD5 / USART2_TX | UART2 J26 | DI | MCU transmit | Yellow |
+| PD6 / USART2_RX | UART2 J26 | RO | MCU receive | Orange |
+| PE7 / EXP1 pin 2 | EXP1 | RE (active LOW) | Receiver held enabled | Green |
+| PE8 / EXP1 pin 1 | EXP1 | DE (active HIGH) | Transmitter direction | Blue |
+| 5V | UART2 J26 | VCC | MAX485ESA is a **5V** transceiver | Red |
+| GND | UART2 J26 | GND | Shared logic ground | Brown |
+| -- | -- | A / B | To feeder **RS485 A/B only** (verify feeder pinout) | N/A |
 
 **Do not join DE and RE.** The installed `jnesselr/rs485` library drives the read-enable pin LOW and uses local receive echo to verify sent bytes and check collisions. Its write-enable pin transitions LOW/HIGH/LOW. Two separate GPIOs are assigned accordingly.
 
