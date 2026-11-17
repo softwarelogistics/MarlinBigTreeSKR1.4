@@ -8,7 +8,7 @@ This enables the **existing** Marlin `M485` / Photon packetizer; it does not imp
 ## Dedicated pins
 
 | Octopus Pro V1.1 | Header | MAX485ESA breakout | Purpose | Color
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | PD5 / USART2_TX | UART2 J26 | DI | MCU transmit | Yellow |
 | PD6 / USART2_RX | UART2 J26 | RO | MCU receive | Orange |
 | PE7 / EXP1 pin 2 | EXP1 | RE (active LOW) | Receiver held enabled | Green |
