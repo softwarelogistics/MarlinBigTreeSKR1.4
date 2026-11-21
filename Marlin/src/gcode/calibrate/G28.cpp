@@ -396,7 +396,7 @@ void GcodeSuite::G28() {
             with_probe = false;
           }
 
-          if (may_skate) {
+          if (may_skate && DISABLED(PNP_NO_PREHOME_Z_CLEARANCE)) {
             // Apply Z clearance before doing any lateral motion
             if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Raise Z before homing:");
             do_z_clearance(z_homing_height, with_probe);
@@ -416,45 +416,6 @@ void GcodeSuite::G28() {
         if (ENABLED(HOME_Y_BEFORE_X) && (doY || TERN0(CODEPENDENT_XY_HOMING, doX)))
           homeaxis(Y_AXIS);
       #endif
-
-      #if HAS_Z_AXIS
-
-      // Home Z last if homing towards the bed
-      #if DISABLED(HOME_Z_FIRST)
-        if (doZ) {
-          #if ANY(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
-            stepper.set_all_z_lock(false);
-            stepper.set_separate_multi_axis(false);
-          #endif
-
-          #if ENABLED(Z_SAFE_HOMING)
-            // H means hold the current X/Y position when probing.
-            // Otherwise move to the define safe X/Y position before homing Z.
-            if (!parser.seen_test('H'))
-              home_z_safely();
-            else
-              homeaxis(Z_AXIS);
-          #else
-            homeaxis(Z_AXIS);
-          #endif
-
-          #if ANY(Z_HOME_TO_MIN, ALLOW_Z_AFTER_HOMING)
-            finalRaiseZ = true;
-          #endif
-        }
-      #endif
-
-      SECONDARY_AXIS_CODE(
-        if (doI) homeaxis(I_AXIS),
-        if (doJ) homeaxis(J_AXIS),
-        if (doK) homeaxis(K_AXIS),
-        if (doU) homeaxis(U_AXIS),
-        if (doV) homeaxis(V_AXIS),
-        if (doW) homeaxis(W_AXIS)
-      );
-
-    #endif // HAS_Z_AXIS
-
 
       // Home X
       #if HAS_X_AXIS
@@ -498,6 +459,46 @@ void GcodeSuite::G28() {
         // Home J (after Y)
         if (doJ) homeaxis(J_AXIS);
       #endif
+
+      #if HAS_Z_AXIS
+
+      // Home Z only after X and Y homing completes.
+      // A lowered pick-and-place head cannot be moved safely before XY home.
+      #if DISABLED(HOME_Z_FIRST)
+        if (doZ) {
+          #if ANY(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
+            stepper.set_all_z_lock(false);
+            stepper.set_separate_multi_axis(false);
+          #endif
+
+          #if ENABLED(Z_SAFE_HOMING)
+            // H means hold the current X/Y position when probing.
+            // Otherwise move to the define safe X/Y position before homing Z.
+            if (!parser.seen_test('H'))
+              home_z_safely();
+            else
+              homeaxis(Z_AXIS);
+          #else
+            homeaxis(Z_AXIS);
+          #endif
+
+          #if ANY(Z_HOME_TO_MIN, ALLOW_Z_AFTER_HOMING)
+            finalRaiseZ = true;
+          #endif
+        }
+      #endif
+
+      SECONDARY_AXIS_CODE(
+        if (doI) homeaxis(I_AXIS),
+        if (doJ) homeaxis(J_AXIS),
+        if (doK) homeaxis(K_AXIS),
+        if (doU) homeaxis(U_AXIS),
+        if (doV) homeaxis(V_AXIS),
+        if (doW) homeaxis(W_AXIS)
+      );
+
+    #endif // HAS_Z_AXIS
+
 
       TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(saved_motion_state));
 
